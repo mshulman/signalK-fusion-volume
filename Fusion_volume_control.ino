@@ -29,12 +29,17 @@ int status = WL_IDLE_STATUS;
 int count = 0;
 
 void setUpSubscription() {
+  Serial.println("Setting up subscription");
+  
   client.begin("/signalk/v1/stream?subscribe=none");
 
   while (!client.connected()) {
+    printDots();
+    delay(500);
     ; // wait to connect
   }
 
+  Serial.println("connected");
   client.beginMessage(TYPE_TEXT);
   client.print("{\"context\":\"vessels.self\",\"subscribe\": [{\"path\": \"entertainment.device.fusion1.output.*\"}]}");
   client.endMessage();
@@ -48,9 +53,14 @@ void setup() {
   while ( status != WL_CONNECTED) {
     Serial.print("Attempting to connect to Network named: ");
     Serial.println(ssid);                   // print the network name (SSID);
+    Serial.print(". Password: ");
+    Serial.println(pass);
 
     // Connect to WPA/WPA2 network:
     status = WiFi.begin(ssid, pass);
+    if (status != WL_CONNECTED) {
+      delay(1000);                           // wait a bit and try again
+    }
   }
 
   // print the SSID of the network you're attached to:
@@ -61,8 +71,6 @@ void setup() {
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);
-
-  Serial.println("starting WebSocket client");
   
 }
 
@@ -93,8 +101,7 @@ void printVolumeUpdates(String message) {
   int volume = updates_0["values"][0]["value"]; // 10
 
   Serial.println();
-  Serial.print("path: ");
-
+  
   char* completePath = const_cast<char*>(path);
   
   MatchState ms;
@@ -119,6 +126,7 @@ static void printDots() {
     count = 0;
   } else {
     Serial.print(".");
+    count = count + 1;
   }
 }
   
@@ -126,8 +134,6 @@ static void printDots() {
 void loop() {
   setUpSubscription();
   while (client.connected()) {
-    // increment count for next message
-    count++;
   
     // check if a message is available to be received
     int messageSize = client.parseMessage();
