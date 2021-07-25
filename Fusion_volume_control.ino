@@ -1,14 +1,12 @@
 /*
-  Simple WebSocket client for ArduinoHttpClient library
-  Connects to the WebSocket server, and sends a hello
-  message every 5 seconds
+  mshulman@gmail.com
+  25-Jul-2021
+  
+  Subscribe to the SignalK server and get the volume control settings
+  for all zones
 
-  created 28 Jun 2016
-  by Sandeep Mistry
-  modified 22 Jan 2019
-  by Tom Igoe
-
-  this example is in the public domain
+  Eventually, display the volume on a local display, and allow changing
+  the volume with a rotary encoder
 */
 #include <ArduinoHttpClient.h>
 #include <WiFi101.h>
