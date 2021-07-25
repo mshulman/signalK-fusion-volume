@@ -1,10 +1,7 @@
 /*
   mshulman@gmail.com
-<<<<<<< HEAD
-=======
   25-Jul-2021
   
->>>>>>> 4f960e9bcd5ac04250da9c102de19424b24956c4
   Subscribe to the SignalK server and get the volume control settings
   for all zones
 
